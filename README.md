@@ -61,3 +61,11 @@ The current/past datasets will remain unchanged for consistent benchmarking. New
 
 If you wish to contribute data to the LEI-SFD, please contact [Andrew Turpin](mailto:andrew.turpin@lei.org.au), 
 or create a new subfolder (use a short name and version number, please).
+
+## md5 Checksum
+
+```
+    cat datasheet.md *.r xys.csv `find LEI_Rapid1/` `find LEI_SFD1/` | md5
+
+    069e75dc9cd0fdcaae58d37c6652f3c7
+``
