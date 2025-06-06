@@ -1,7 +1,7 @@
 # Lions Eye Institute Structure-Function Dataset (LEI-SFD)
 
 If you use any part of this dataset, please cite 
-> Under submission to TVST, awaiting peer review (Jan 2025).
+> Under submission to TVST, awaiting peer review (Jun 2025).
 
 
 This repository contains synthetic datasets derived from clinical data on glaucomatous eyes. 
@@ -16,6 +16,28 @@ The data is in csv files in the [LEI_SFD1](LEI_SFD1) folder. The [LEI_Rapid](LEI
 
 To generate new datasets from the ground truth `true.csv`, use  the `generate_synthetic_data(...)` function in [generate.r](generate.r). Something like (within R with the working directory set to the location of this repo)
 
+### Simple plot
+```
+# In R
+d <- read.csv("reliable.csv")
+xys <- read.csv("xys.csv")
+
+vf_cols <- paste0("vf.", 1:52)
+oct_cols <- paste0("oct.", 1:768)
+
+layout(matrix(1:2, 1, 2))
+  # Plot first visual field for first patient
+plot(xys$x, xys$y, type = "n", xlab = "Eccentricity", ylab = "Eccentricity")
+text(xys$x, xys$y, d[1, vf_cols])
+abline(h = 0, v = 0)
+
+  # Plot first OCT for first patient
+plot(1:768 / 768 * 360, d[1, oct_cols], xlab = "Degrees", ylab = "RNFLT (microns)", type = "l")
+```
+
+![Output of example plot](eg.png "Example plots")
+
+### Generate new data
 ```
 source("generate.r")
 
@@ -33,7 +55,7 @@ generate_synthetic_data(Sys.time(),
 
 ## Updates
 
-If the community finds this a useful resource, we will add more eyes in the future (claims [Andrew Turpin](mailto:andrew.turpin@lei.org.au), Jan 2025).
+If the community finds this a useful resource, we will add more eyes in the future (claims [Andrew Turpin](mailto:andrew.turpin@lei.org.au), Jun 2025).
 
 The current/past datasets will remain unchanged for consistent benchmarking. New data will be added in new folders with new version numbers (eg LEI_SFD2).
 

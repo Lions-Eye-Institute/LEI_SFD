@@ -4,8 +4,10 @@
 
 Many analytical methods for assessing glaucomatous progression have been suggested but 
 nearly all have been tested on separate datasets that happen to be available to the
-developers of the methods.
-This dataset provides an open source resource on which methods can be tested and compared using a common dataset.
+developers of the methods and using various definitions of ground truth.
+This dataset provides an open source resource on which methods can be 
+tested and compared using a common dataset and
+with a well defined ground truth.
 
 ## Who created the dataset (e.g., which team, research group) and on behalf of which entity (e.g., company, institution, organization)?
 
@@ -20,7 +22,7 @@ Internal funding by Lions Save Sight Foundation, Lions Eye Institute and Curtin 
 ## What do the instances that comprise the dataset represent (e.g., documents, photos, people, countries)?
 
 Each instance represents testing a single eye over a period of 5 years at 6 monthly intervals and contains
-Humphrery Field Analyser 24-2 visual fields and Spectralis OCT ONH ring scans.
+Humphrey Field Analyzer 24-2 visual fields and Spectralis OCT ONH ring scans.
 
 Instances have different levels of measurement noise added ranging from none ("True"), "typical" ("Reliable") to substantial ("Unreliable").
 
@@ -50,7 +52,7 @@ Baseline (visit 1) within (repeatability)   | 15| 17| 15| 17| 21| 15|  2.2  |
 Followup (visits 2-10) between              | 12| 21| 16| 18| 25|  8|  2.5  |
 Followup (visits 2-10) within               | 26| 13|  9| 24| 15| 13|  0.79 |
 
-Before adding the noise to the "true" OCT, it was smoothed using the mean of a sliding-window of width 150 pixels (A-scans).
+Before adding the noise to the "true" OCT, it was smoothed using the mean of a sliding-window of width 151 pixels (A-scans).
 Any "noise + oct" values that fell below the floor of 40 micros was sampled from $\max(30, N(40, \sigma_f))$ 
 where $\sigma_f$ was 5 for visit 1 (baseline) and 2 for other visits (2-10). 
 This vector of "floor noise" was smoothed with sliding window of size 20 pixels.
@@ -91,15 +93,15 @@ Neuroretinal Rim, and Peripapillary Retinal Nerve Fiber Layer."](https://doi.org
 
 |                      |  n  | False Positive<br>SAP | False Negative<br>SAP | GVE<br>SAP | OCT noise |
 |----------------------|:---:|:--------------:|:--------------:|:-------:|:---------:|
-|True                  | 202 |                |                |         |           |
-|Reliable              | 202 |   3%           |       1%       |         | $N(0, N(\mu, \sigma))$ |
-|UnReliable            | 202 |   15%          |       3%       |         | $N(0, N(\mu, \sigma))$ |
-|Reliable-GVE          | 202 |   3%           |       1%       | $\pm2$  | $N(0, N(\mu, \sigma))$ |
-|UnReliable-GVE        | 202 |   15%          |       3%       | $\pm2$  | $N(0, N(\mu, \sigma))$ |
-|Stable Reliable       | 202 |   3%           |       1%       |         | $N(0, N(\mu, \sigma))$ |
-|Stable UnReliable     | 202 |   15%          |       3%       |         | $N(0, N(\mu, \sigma))$ |
-|Stable Reliable-GVE   | 202 |   3%           |       1%       | $\pm2$  | $N(0, N(\mu, \sigma))$ |
-|Stable UnReliable-GVE | 202 |   15%          |       3%       | $\pm2$  | $N(0, N(\mu, \sigma))$ |
+|True                  | 177 |                |                |         |           |
+|Reliable              | 177 |   3%           |       1%       |         | $N(0, N(\mu, \sigma))$ |
+|UnReliable            | 177 |   15%          |       3%       |         | $N(0, N(\mu, \sigma))$ |
+|Reliable-GVE          | 177 |   3%           |       1%       | $\pm2$  | $N(0, N(\mu, \sigma))$ |
+|UnReliable-GVE        | 177 |   15%          |       3%       | $\pm2$  | $N(0, N(\mu, \sigma))$ |
+|Stable Reliable       | 177 |   3%           |       1%       |         | $N(0, N(\mu, \sigma))$ |
+|Stable UnReliable     | 177 |   15%          |       3%       |         | $N(0, N(\mu, \sigma))$ |
+|Stable Reliable-GVE   | 177 |   3%           |       1%       | $\pm2$  | $N(0, N(\mu, \sigma))$ |
+|Stable UnReliable-GVE | 177 |   15%          |       3%       | $\pm2$  | $N(0, N(\mu, \sigma))$ |
 
 where $\mu$ and $\sigma$ are as described in the previous section. 
 
@@ -109,7 +111,7 @@ where $\mu$ and $\sigma$ are as described in the previous section.
  * Visit Number
  * 52 Static Automated Perimetry Sensitivity values (dB)
  * 52 Static Automated Perimetry Total Deviations (dB)
- * 768 RNFL Thickness values (microns)
+ * 768 cpRNFL Thickness values (microns)
 
 In addition, there is a meta data file and one R script.
  * [xy.csv](xys.csv) gives the (x,y) coordinates of the vf* columns in the data files.
@@ -126,7 +128,7 @@ No
 ## Are there recommended data splits (e.g., training, development/validation, testing)?
 
 It is recommended that any data split preserves the order of the ID numbers.
-For example, a 60%/20%/20% split of the Reliable data would use Id numbers 1..121/122..161/162..202.
+For example, a 60%/20%/20% split of the Reliable data would use Id numbers 1..106/107..142/143..177.
 
 ## Are there any errors, sources of noise, or redundancies in the dataset?
 
@@ -141,7 +143,7 @@ This dataset is self-contained.
 
 ## Does the dataset contain data that might be considered confidential (e.g., data that is protected by legal privilege or by doctor–patient confidentiality, data that includes the content of individuals’ non-public communications)?
 
-No. The dataset is synthetically derived from real data in ways that cannot be accurately reversed thus contains not private information.
+No. The dataset is synthetically derived from real data in ways that cannot be accurately reversed thus contains no private information.
 
 
 ## Does the dataset relate to people?
@@ -150,31 +152,44 @@ Yes
 
 ## Does the dataset identify any subpopulations (e.g., by age, gender)?
 
-No
+The synthetic data represents glaucomatous eyes of those over age 18.
 
 # Collection Process
 
 ## How was the data associated with each instance acquired?
 
-All data is synthetically generated based on real data collected at the Lions Eye Institute Glaucoma clinic over the years 2010 to 2024. 
-24-2 SAP data were collected with the Humpherey Field Analyzer (Zeiss) and thus synthetic data represents fields collected on that device.
+All data is synthetically generated based on real data collected at the Lions Eye Institute Glaucoma clinic over the years 2010 to 2021. 
+24-2 SAP data were collected with the Humphrey Field Analyzer (Zeiss) and thus synthetic data represents fields collected on that device.
 Similarly, the OCT data is based on data collected with the Spectralis OCT device (Heidelberg Engineering) at the same clinic, so represents
 data collected by that device in a tertiary glaucoma clinic.
 
 ## What mechanisms or procedures were used to collect the data?
 
-All tests were 24-2 white-on-white Goldmann stimulus size III exams, performed with either a Swedish Interactive Thresholding Algorithm (SITA, Standard or Fast) or a Full-threshold strategy. 
+All tests were 24-2 white-on-white Goldmann stimulus size III exams, performed with either a Swedish Interactive Thresholding Algorithm (SITA, Standard or Fast) strategy. 
 
-All OCT scans used the ONH Radial Scan (old or new) protocol and the 3.5mm ring was selected for inclusion.
+All OCT scans used the cpRNFL ring scan with the number of eyes with each protocol given 
+in the following table.
+
+| Spectralis Protocol  |  Diameter  | Number |
+|----------------------|:---:|--------------:|
+  OCT Circle Scan  | 3.3  | 4  |
+  OCT Circle Scan  | 3.4  | 25 |
+  OCT Circle Scan  | 3.5  | 50 |
+  OCT Circle Scan  | 3.6  | 24  |
+  OCT Circle Scan  | 3.7  | 9  |
+  OCT Circle Scan  | 3.8  | 3  |
+  OCT Circle Scan  | 3.9  | 1 |
+  OCT Radial Circle Scan | 3.5 | 47 |
+
 
 ## Who was involved in the data collection process?
 
 This synthetic data is based on real data collected by ophthalmologic technicians working at Lions Eye Institute the as part of routine clinical care.  
 The true slopes of progression in each eye and the final VF and OCT was used to generate the synthetic data.
 
-## Over what timeframe was the data collected?
+## Over what time frame was the data collected?
 
-The real data was collected between 2010 and 2023 and this data generated in 2024.
+The real data was collected between 2010 and 2021 and this data generated in 2025.
 
 ## Were any ethical review processes conducted?
 
@@ -223,7 +238,9 @@ No
 No.
 
 ## Is there a repository that links to any or all papers or systems that use the dataset?
-Yes, it is linked as part of the [Open Perimetry Initiative](https://openperimetry.org)
+Yes, [LEI github](https://github.com/Lions-Eye-Institute/LEI_SFD)
+and some cross linking on 
+the [Open Perimetry Initiative](https://openperimetry.org).
 
 ## What (other) tasks could the dataset be used for?
 
@@ -243,10 +260,19 @@ No attempts should be made to discover the original data on which this synthetic
 The dataset is publicly available.
 
 ## How will the dataset be distributed (e.g., tarball on website, API, GitHub)?
-[Github](XXX)
+[LEI github](https://github.com/Lions-Eye-Institute/LEI_SFD)
+
+## What (other) tasks could the dataset be used for?
+
+Any tasks investigating glaucomatous progression using SAP or OCT ONH scans.
+
+
+## Is there anything about the composition of the dataset or the way it was collected and preprocessed/cleaned/labeled that might impact future uses?
+
+No.
 
 ## When will the dataset be distributed?
-At the time of submission of the dataset paper
+Early 2025.
 
 ## Will the dataset be distributed under a copyright or other intellectual property (IP) license, and/or under applicable terms of use (ToU)?
 The dataset will be available for open source use under the 3-Clause BSD license.
@@ -261,7 +287,7 @@ No
 # Maintenance
 
 ## Who will be supporting/hosting/maintaining the dataset?
-The dataset will be hosted on GitHub
+The dataset will be hosted on GitHub and maintained by LEI staff.
 
 ## How can the owner/curator/manager of the dataset be contacted?
 Email: [andrew.turpin@lei.org.au](mailto:andrew.turpin@lei.org.au)
@@ -270,7 +296,7 @@ Email: [andrew.turpin@lei.org.au](mailto:andrew.turpin@lei.org.au)
 No
 
 ## Will the dataset be updated?
-As at January 2025, corrections and additions will be made if necessary.
+As at March 2025, corrections and additions will be made if necessary.
 More eyes may be added in the future.
 
 ## If the dataset relates to people, are there applicable limits on the retention of the data associated with the instances?
