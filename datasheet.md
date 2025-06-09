@@ -89,7 +89,7 @@ Neuroretinal Rim, and Peripapillary Retinal Nerve Fiber Layer."](https://doi.org
 
 ## How many instances are there in total (of each type, if appropriate)?
 
-217 eyes, 4 types of noise, stable and progressing.
+177 eyes from 122 people, 4 types of noise, stable and progressing.
 
 |                      |  n  | False Positive<br>SAP | False Negative<br>SAP | GVE<br>SAP | OCT noise |
 |----------------------|:---:|:--------------:|:--------------:|:-------:|:---------:|
@@ -107,13 +107,15 @@ where $\mu$ and $\sigma$ are as described in the previous section.
 
 ## What data does each instance consist of? 
 
- * Patient ID number
+ * Eye number (1..177)
+ * Person number (1..122)
  * Visit Number
  * 52 Static Automated Perimetry Sensitivity values (dB)
  * 52 Static Automated Perimetry Total Deviations (dB)
  * 768 cpRNFL Thickness values (microns)
 
-In addition, there is a meta data file and one R script.
+In addition, there are two meta data files and one main R script.
+ * [person.csv](person.csv) gives the sex and age at final HFA measurement for each person.
  * [xy.csv](xys.csv) gives the (x,y) coordinates of the vf* columns in the data files.
  * [generate.r](generate.r) which will generate similar data sets that can be used for training, determining confidence intervals and so on.
 
