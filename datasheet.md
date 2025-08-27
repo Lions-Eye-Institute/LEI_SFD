@@ -5,7 +5,7 @@
 Many analytical methods for assessing glaucomatous progression have been suggested but 
 nearly all have been tested on separate datasets that happen to be available to the
 developers of the methods and using various definitions of ground truth.
-This dataset provides an open source resource on which methods can be 
+This dataset provides an open resource on which methods can be 
 tested and compared using a common dataset and
 with a well defined ground truth.
 
@@ -29,40 +29,38 @@ Instances have different levels of measurement noise added ranging from none ("T
 ### VF Noise
 Perimetric noise is introduced by using simulated measurements of True data using
 the Full Threshold (FT, a 4-2 staircase) algorithm as implemented in the Open Perimetry Interface (R package OPI, v3.0)
-and using the "SimHenson" mode of simulation in the OPI default parameters and 
+using the "SimHenson" mode of simulation in the OPI default parameters and 
 with different false positive and false negative response rates.
-In addition, for some instances a value was added to all true values prior to simulation as a "general height" change or "global visit effect" (see [below](#gve)).
+In addition, for some instances a value was added to all true values prior to simulation as 
+a "general height" change or "global visit effect" (see [below](#visit-specific-noise)).
 
-### OCT Noise
+### OCT Noise {#octNoise}
 OCT noise is introduced as the sum of repeatability (within test) and reproducibility (between test) noise 
 each sampled from a normal distribution with mean zero and standard deviation 
 modelled on the results from [Schrems-Hoesl et al. 2018. "Precision of Optic Nerve Head and 
 Retinal Nerve Fiber Layer Parameter Measurements by Spectral-domain Optical Coherence Tomography".](https://doi.org/10.1097/ijg.0000000000000875)
-The standard deviation of noise for a sector $i\in[1,6]$ was the 
-sum of the between and within values 
-$\sigma_i = \sqrt{6\times w_i/100}\times\mu$
-with $w_i$ and $\mu$ given in the following table.
-For a cpRNFL pixel in sector $i$, noise was drawn from $N(0, \sigma_i\sqrt{n_i})$ where $n_i$ is the number 
-of pixels (A-scans) in sector $i$. (Thus $\sum n_i = 768$.)
+The standard deviation of noise for each of the six sectors 
+was the proportion of the sum of the pooled sector repeatability and reproducibility 
+reported in Schrems-Hoesl et al. Table 2 with the proportions determined 
+by the variability decomposition reported in Table 5 of the same.
+This resulted in the values in the following table. 
+For example, the noise for the Temporal sector at baseline was sampled from 
+$N(0, sigma = \sqrt{6 (2.7 \times 0.1 + 2.2 \times 0.15)})$.
 
-| | $w_i$<br>Temporal<br>-45:45° |  $w_i$<br>TS<br>46:85° | $w_i$<br>TI<br>86:125° | $w_i$<br>Nasal<br>126:235° | $w_i$<br>NS<br>236:275° | $w_i$<br>NI<br>276:315° | $\mu$<br>All<br>sectors |
+| | Temporal<br>-45:45° |  TS<br>46:85° | NS<br>86:125° | Nasal<br>126:235° | NI<br>236:275° | TI<br>276:315° | $\sigma$<br>pooled |
 ---------------------------------------------|:--------:|:------:|:------:|:-------:|:-------:|:--------:|:------:|
-Baseline (visit 1) between (reproducibility)| 10| 20| 14| 25| 28|  3|  2.7  |
-Baseline (visit 1) within (repeatability)   | 15| 17| 15| 17| 21| 15|  2.2  |
-Followup (visits 2-10) between              | 12| 21| 16| 18| 25|  8|  2.5  |
-Followup (visits 2-10) within               | 26| 13|  9| 24| 15| 13|  0.79 |
+Baseline (visit 1) between (reproducibility)| 10% | 20%| 14%| 25%| 28%|  3%|  2.7  |
+Baseline (visit 1) within (repeatability)   | 15% | 17%| 15%| 17%| 21%| 15%|  2.2  |
+Followup (visits 2-10) between              | 12% | 21%| 16%| 18%| 25%|  8%|  2.5  |
+Followup (visits 2-10) within               | 26% | 13%|  9%| 24%| 15%| 13%|  0.79 |
 
-Before adding the noise to the "true" OCT, it was smoothed using the mean of a sliding-window of width 151 pixels (A-scans).
-Any "noise + oct" values that fell below the floor of 40 micros was sampled from $\max(30, N(40, \sigma_f))$ 
-where $\sigma_f$ was 5 for visit 1 (baseline) and 2 for other visits (2-10). 
-This vector of "floor noise" was smoothed with sliding window of size 20 pixels.
-Finally, the "oct + noise" is rounded to the nearest integer.
+The "true oct + noise" is rounded to the nearest integer.
 See `generate.r` for code.
 
-### <a href = "gve"></a>Visit specific noise
+### Visit specific noise
 
-To account for some other real world effects in the perimetric data, a Global Visit Effect (GVE) is
-added to some instances.
+To account for some other real world effects in the perimetric data, 
+a Global Visit Effect (GVE) is added to some instances.
 This might include factors like
   * poor/different operator performance, eg bad patient instruction, negligent perimetric monitoring, etc;
   * external distractions, eg fire alarms, noisy test rooms, lighting, etc; or
@@ -76,47 +74,49 @@ No GVE is used for OCT data.
 
 ### Ageing
 
-There are no aging effects added to the VF or OCT data in these datasets. 
+There are aging effects are removed from the VF data but remain in the OCT
+in these datasets. 
 The slopes of progression for the VF data 
 were derived from real HFA data after correcting for ageing at a rate of 1 dB per decade. 
 The slopes of OCT
 progression were taken as is from the real data without any age adjustment.
 The date range of the real series spanned [2.5, 10.7] years 
-(median: 5.0 IQR: [ 4.2, 5.9]), so OCT ageing is at most about 1 micron.
+(median: 5.1), so OCT ageing is at most about 1 micron over the time span of this dataset.
 ([Chauhan et al. 2020. "Differential Effects of Aging in the Macular Retinal Layers, 
 Neuroretinal Rim, and Peripapillary Retinal Nerve Fiber Layer."](https://doi.org/10.1016/j.ophtha.2019.09.013))
 
 
 ## How many instances are there in total (of each type, if appropriate)?
 
-177 eyes from 122 people, 4 types of noise, stable and progressing.
+168 eyes, 4 types of noise, stable and progressing.
 
 |                      |  n  | False Positive<br>SAP | False Negative<br>SAP | GVE<br>SAP | OCT noise |
 |----------------------|:---:|:--------------:|:--------------:|:-------:|:---------:|
-|True                  | 177 |                |                |         |           |
-|Reliable              | 177 |   3%           |       1%       |         | $N(0, N(\mu, \sigma))$ |
-|UnReliable            | 177 |   15%          |       3%       |         | $N(0, N(\mu, \sigma))$ |
-|Reliable-GVE          | 177 |   3%           |       1%       | $\pm2$  | $N(0, N(\mu, \sigma))$ |
-|UnReliable-GVE        | 177 |   15%          |       3%       | $\pm2$  | $N(0, N(\mu, \sigma))$ |
-|Stable Reliable       | 177 |   3%           |       1%       |         | $N(0, N(\mu, \sigma))$ |
-|Stable UnReliable     | 177 |   15%          |       3%       |         | $N(0, N(\mu, \sigma))$ |
-|Stable Reliable-GVE   | 177 |   3%           |       1%       | $\pm2$  | $N(0, N(\mu, \sigma))$ |
-|Stable UnReliable-GVE | 177 |   15%          |       3%       | $\pm2$  | $N(0, N(\mu, \sigma))$ |
+|True                  | 168 |                |                |         |           |
+|Reliable              | 168 |   3%           |       1%       |         | $N(0, \sigma))$ |
+|UnReliable            | 168 |   15%          |       3%       |         | $N(0, \sigma))$ |
+|Reliable-GVE          | 168 |   3%           |       1%       | $\pm2$  | $N(0, \sigma))$ |
+|UnReliable-GVE        | 168 |   15%          |       3%       | $\pm2$  | $N(0, \sigma))$ |
+|Stable Reliable       | 168 |   3%           |       1%       |         | $N(0, \sigma))$ |
+|Stable UnReliable     | 168 |   15%          |       3%       |         | $N(0, \sigma))$ |
+|Stable Reliable-GVE   | 168 |   3%           |       1%       | $\pm2$  | $N(0, \sigma))$ |
+|Stable UnReliable-GVE | 168 |   15%          |       3%       | $\pm2$  | $N(0, \sigma))$ |
 
-where $\mu$ and $\sigma$ are as described in the previous section. 
+where $\sigma$ is described section [OCT Noise](#oct-noise).
 
 ## What data does each instance consist of? 
 
- * Eye number (1..177)
- * Person number (1..122)
- * Visit Number
- * 52 Static Automated Perimetry Sensitivity values (dB)
- * 52 Static Automated Perimetry Total Deviations (dB)
- * 768 cpRNFL Thickness values (microns)
+ * Unique eye number `id`
+ * Unique person number `person` (index into `person.csv`)
+ * Eye ("L" or "R")
+ * Visit Number `visit` (1..10)
+ * 52 Static Automated Perimetry Sensitivity values (dB) `vf.1`..`vf.52`
+ * 52 Static Automated Perimetry Total Deviations (dB) `td.1`..`td.52`
+ * 6 cpRNFL Sector Thickness values (microns) `oct.T`..`oct.TI`
 
-In addition, there are two meta data files and one main R script.
- * [person.csv](person.csv) gives the sex and age at final HFA measurement for each person.
- * [xy.csv](xys.csv) gives the (x,y) coordinates of the vf* columns in the data files.
+In addition, there are 2 meta data files and one R script.
+ * [xys.csv](xys.csv) gives the (x,y) coordinates of the vf* columns in the data files.
+ * [person.csv](person.csv) gives the age and sex and OCT Scan type of the 118 people included (indexed by the `person` column in [true.csv](true.csv)).
  * [generate.r](generate.r) which will generate similar data sets that can be used for training, determining confidence intervals and so on.
 
 ## Is there a label or target associated with each instance?
@@ -129,13 +129,16 @@ No
 
 ## Are there recommended data splits (e.g., training, development/validation, testing)?
 
-It is recommended that any data split preserves the order of the ID numbers.
-For example, a 60%/20%/20% split of the Reliable data would use Id numbers 1..106/107..142/143..177.
+It is recommended that any data split preserves the order of the `id` numbers.
+For example, a 60%/20%/20% split of the Reliable data would use `id` numbers 
+1..100/101..134/135..168.
+
+An alternate it so split the data into left eyes (n = 84) and right eyes (n = 110).
 
 ## Are there any errors, sources of noise, or redundancies in the dataset?
 
-All data is synthetically generated to have given rates of progression, hence there is no noise other than that 
-deliberately introduced.
+All data is synthetically generated to have given rates of progression, hence 
+there is no noise other than that deliberately introduced.
 
 
 ## Is the dataset self-contained, or does it link to or otherwise rely on external resources (e.g., websites, tweets, other datasets)?
@@ -167,22 +170,9 @@ data collected by that device in a tertiary glaucoma clinic.
 
 ## What mechanisms or procedures were used to collect the data?
 
-All tests were 24-2 white-on-white Goldmann stimulus size III exams, performed with either a Swedish Interactive Thresholding Algorithm (SITA, Standard or Fast) strategy. 
+All tests were 24-2 white-on-white stimulus size Goldmann III exams, performed with either a Swedish Interactive Thresholding Algorithm (SITA, Standard or Fast) strategy. 
 
-All OCT scans used the cpRNFL ring scan with the number of eyes with each protocol given 
-in the following table.
-
-| Spectralis Protocol  |  Diameter  | Number |
-|----------------------|:---:|--------------:|
-  OCT Circle Scan  | 3.3  | 4  |
-  OCT Circle Scan  | 3.4  | 25 |
-  OCT Circle Scan  | 3.5  | 50 |
-  OCT Circle Scan  | 3.6  | 24  |
-  OCT Circle Scan  | 3.7  | 9  |
-  OCT Circle Scan  | 3.8  | 3  |
-  OCT Circle Scan  | 3.9  | 1 |
-  OCT Radial Circle Scan | 3.5 | 47 |
-
+All OCT scans used the cpRNFL ring scan with the protocol given in the `person.csv` file.
 
 ## Who was involved in the data collection process?
 
@@ -195,8 +185,13 @@ The real data was collected between 2010 and 2021 and this data generated in 202
 
 ## Were any ethical review processes conducted?
 
-All patients consented for their data to be used for research purposes. As this published data set contains no actual real data, no
-IRB approval was sought for its publication.
+All patients consented for their data to be used for research purposes at the time of enrolling 
+in the Lions Eye Institute clinic. As this published data set contains no real data 
+that could identify patients, a waiver for prospective consent was granted by the 
+University of Western Australia HREC.
+
+The person number used in the datasets is randomly assigned and 
+is unrelated in any way to the underlying patient's identifying information.
 
 ## Did you collect the data from the individuals in question directly, or obtain it via third parties or other sources?
 
@@ -216,7 +211,7 @@ No.
 
 ## Has an analysis of the potential impact of the dataset and its use on data subjects been conducted?
 
-Yes
+Yes.
 
 
 # Preprocessing/cleaning/labeling
@@ -231,12 +226,14 @@ All data is synthetically generated from extensively filtered real data.
 The real data which seeded the production of this synthetic data is not publicly available.
 
 ## Is the software used to preprocess/clean/label the instances available?
-No
+
+No.
 
 
 # Uses
 
 ## Has the dataset been used for any tasks already?
+
 No.
 
 ## Is there a repository that links to any or all papers or systems that use the dataset?
@@ -250,9 +247,11 @@ Any tasks investigating glaucomatous progression using SAP or OCT ONH scans.
 
 
 ## Is there anything about the composition of the dataset or the way it was collected and preprocessed/cleaned/labeled that might impact future uses?
-No
+
+No.
 
 ## Are there tasks for which the dataset should not be used?
+
 No attempts should be made to discover the original data on which this synthetic data is based.
 
 
@@ -262,28 +261,22 @@ No attempts should be made to discover the original data on which this synthetic
 The dataset is publicly available.
 
 ## How will the dataset be distributed (e.g., tarball on website, API, GitHub)?
-[LEI github](https://github.com/Lions-Eye-Institute/LEI_SFD)
-
-## What (other) tasks could the dataset be used for?
-
-Any tasks investigating glaucomatous progression using SAP or OCT ONH scans.
-
-
-## Is there anything about the composition of the dataset or the way it was collected and preprocessed/cleaned/labeled that might impact future uses?
-
-No.
+[LEI Github](https://github.com/Lions-Eye-Institute/LEI_SFD)
 
 ## When will the dataset be distributed?
 Early 2025.
 
 ## Will the dataset be distributed under a copyright or other intellectual property (IP) license, and/or under applicable terms of use (ToU)?
+
 The dataset will be available for open source use under the 3-Clause BSD license.
 
 ## Have any third parties imposed IP-based or other restrictions on the data associated with the instances?
-No
+
+No.
 
 ## Do any export controls or other regulatory restrictions apply to the dataset or to individual instances? 
-No
+
+No.
 
 
 # Maintenance
@@ -295,10 +288,10 @@ The dataset will be hosted on GitHub and maintained by LEI staff.
 Email: [andrew.turpin@lei.org.au](mailto:andrew.turpin@lei.org.au)
 
 ## Is there an erratum? 
-No
+No.
 
 ## Will the dataset be updated?
-As at March 2025, corrections and additions will be made if necessary.
+As at August 2025, corrections and additions will be made if necessary.
 More eyes may be added in the future.
 
 ## If the dataset relates to people, are there applicable limits on the retention of the data associated with the instances?
@@ -308,4 +301,4 @@ No
 Yes on GitHub.
 
 ## If others want to extend/augment/build on/contribute to the dataset, is there a mechanism for them to do so?
-Yes: using github.
+Yes: using Github.

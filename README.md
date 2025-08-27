@@ -1,7 +1,7 @@
 # Lions Eye Institute Structure-Function Dataset (LEI-SFD)
 
 If you use any part of this dataset, please cite 
-> Under submission to TVST, awaiting peer review (Jun 2025).
+> Under submission to TVST, awaiting peer review (Sep 2025).
 
 
 This repository contains synthetic datasets derived from clinical data on glaucomatous eyes. 
@@ -12,7 +12,7 @@ See [datasheet.md](datasheet.md) for more details.
 
 ## Usage
 
-The data is in csv files in the [LEI_SFD1](LEI_SFD1) folder. The [LEI_Rapid](LEI_Rapid) folder contains some artificial data that is similar to the LEI-SFD but with much faster (artificial) progressing rates.
+The data is in csv files in the [LEI_SFD1](LEI_SFD1) folder.
 
 To generate new datasets from the ground truth `true.csv`, use  the `generate_synthetic_data(...)` function in [generate.r](generate.r). Something like (within R with the working directory set to the location of this repo)
 
@@ -23,16 +23,18 @@ d <- read.csv("reliable.csv")
 xys <- read.csv("xys.csv")
 
 vf_cols <- paste0("vf.", 1:52)
-oct_cols <- paste0("oct.", 1:768)
+oct_cols <- paste0("oct.", 1:6)
 
 layout(matrix(1:2, 1, 2))
   # Plot first visual field for first patient
-plot(xys$x, xys$y, type = "n", xlab = "Eccentricity", ylab = "Eccentricity")
+plot(xys$x, xys$y, type = "n", xlab = "Eccentricity", ylab = "Eccentricity", las = 1)
 text(xys$x, xys$y, d[1, vf_cols])
 abline(h = 0, v = 0)
 
   # Plot first OCT for first patient
-plot(1:768 / 768 * 360, d[1, oct_cols], xlab = "Degrees", ylab = "RNFLT (microns)", type = "l")
+sectors <- c("T", "TS", "NS", "N", "NI", "TI")
+barplot(unlist(d[1, paste0("oct.", sectors)]),
+    xlab = "Sector", ylab = "Sector RNFLT (microns)", names = sectors, las = 1)
 ```
 
 ![Output of example plot](eg.png "Example plots")
@@ -65,7 +67,7 @@ or create a new subfolder (use a short name and version number, please).
 ## md5 Checksum
 
 ```
-    cat datasheet.md *.r xys.csv `find LEI_Rapid1/` `find LEI_SFD1/` | md5
+    cat datasheet.md `find LEI_SFD1/` | md5
 
-    069e75dc9cd0fdcaae58d37c6652f3c7
+    0e2f84cbae760f866d7e44a6211414ea 
 ``
