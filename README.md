@@ -69,5 +69,5 @@ or create a new subfolder (use a short name and version number, please).
 ```
     cat datasheet.md `find LEI_SFD1/` | md5
 
-    0e2f84cbae760f866d7e44a6211414ea 
+    86dcb1d15bfc0ed63374256830ad2521
 ``

@@ -88,19 +88,19 @@ Neuroretinal Rim, and Peripapillary Retinal Nerve Fiber Layer."](https://doi.org
 
 ## How many instances are there in total (of each type, if appropriate)?
 
-168 eyes, 4 types of noise, stable and progressing.
+162 eyes, 4 types of noise, stable and progressing.
 
 |                      |  n  | False Positive<br>SAP | False Negative<br>SAP | GVE<br>SAP | OCT noise |
 |----------------------|:---:|:--------------:|:--------------:|:-------:|:---------:|
-|True                  | 168 |                |                |         |           |
-|Reliable              | 168 |   3%           |       1%       |         | $N(0, \sigma))$ |
-|UnReliable            | 168 |   15%          |       3%       |         | $N(0, \sigma))$ |
-|Reliable-GVE          | 168 |   3%           |       1%       | $\pm2$  | $N(0, \sigma))$ |
-|UnReliable-GVE        | 168 |   15%          |       3%       | $\pm2$  | $N(0, \sigma))$ |
-|Stable Reliable       | 168 |   3%           |       1%       |         | $N(0, \sigma))$ |
-|Stable UnReliable     | 168 |   15%          |       3%       |         | $N(0, \sigma))$ |
-|Stable Reliable-GVE   | 168 |   3%           |       1%       | $\pm2$  | $N(0, \sigma))$ |
-|Stable UnReliable-GVE | 168 |   15%          |       3%       | $\pm2$  | $N(0, \sigma))$ |
+|True                  | 162 |                |                |         |           |
+|Reliable              | 162 |   3%           |       1%       |         | $N(0, \sigma))$ |
+|UnReliable            | 162 |   15%          |       3%       |         | $N(0, \sigma))$ |
+|Reliable-GVE          | 162 |   3%           |       1%       | $\pm2$  | $N(0, \sigma))$ |
+|UnReliable-GVE        | 162 |   15%          |       3%       | $\pm2$  | $N(0, \sigma))$ |
+|Stable Reliable       | 162 |   3%           |       1%       |         | $N(0, \sigma))$ |
+|Stable UnReliable     | 162 |   15%          |       3%       |         | $N(0, \sigma))$ |
+|Stable Reliable-GVE   | 162 |   3%           |       1%       | $\pm2$  | $N(0, \sigma))$ |
+|Stable UnReliable-GVE | 162 |   15%          |       3%       | $\pm2$  | $N(0, \sigma))$ |
 
 where $\sigma$ is described section [OCT Noise](#oct-noise).
 
@@ -131,9 +131,9 @@ No
 
 It is recommended that any data split preserves the order of the `id` numbers.
 For example, a 60%/20%/20% split of the Reliable data would use `id` numbers 
-1..100/101..134/135..168.
+1..98/99..131/131..162.
 
-An alternate it so split the data into left eyes (n = 84) and right eyes (n = 110).
+An alternate it so split the data into left eyes (n = 83) and right eyes (n = 79).
 
 ## Are there any errors, sources of noise, or redundancies in the dataset?
 
