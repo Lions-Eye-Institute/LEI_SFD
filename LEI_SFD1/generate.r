@@ -78,7 +78,7 @@ Seeds 1 to 102 are reserved to generate the data for standard datasets.", seed))
 
     xys <- tryCatch(read.csv("xys.csv"))
 
-    if (inherits(d, "try-error")) {
+    if (inherits(xys, "try-error")) {
         stop("Could not read xys.csv in generate_synthetic_data()")
     }
 
