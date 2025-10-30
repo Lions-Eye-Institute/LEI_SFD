@@ -37,7 +37,7 @@ barplot(unlist(d[1, paste0("oct.", sectors)]),
     xlab = "Sector", ylab = "Sector RNFLT (microns)", names = sectors, las = 1)
 ```
 
-![Output of example plot](eg.png "Example plots")
+![Output of example plot](eg.jpg "Example plots")
 
 ### Generate new data
 ```
