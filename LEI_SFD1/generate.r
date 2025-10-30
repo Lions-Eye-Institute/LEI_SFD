@@ -134,6 +134,7 @@ Seeds 1 to 102 are reserved to generate the data for standard datasets.", seed))
 
         tt <- unlist(d[i, paste0("vf.", 1:52)])
         mt <- add_vf_noise(tt, fpr, fnr, d$gve[[i]], xys)
+
         delta <- mt - tt
         result[i, paste0("td.", 1:52)] <- round(d[i, paste0("td.", 1:52)] + delta)
         result[i, paste0("vf.", 1:52)] <- mt
@@ -173,7 +174,7 @@ add_vf_noise <- function(vf, fpr, fnr, gve, xys) {
 
     OPI::opiClose()
 
-    mt <- unlist(res$th)
+    mt <- unlist(t(res$th))   # need row-wise flattening
     z <- is.na(mt)
     return(mt[!z])
 }
